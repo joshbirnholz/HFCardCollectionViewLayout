@@ -25,7 +25,7 @@ open class HFCardCollectionViewCell: UICollectionViewCell {
     open override func awakeFromNib() {
         super.awakeFromNib()
         
-        self.setupLayer(self)
+//        self.setupLayer(self)
         
         self.contentView.layer.masksToBounds = true
         self.contentView.layer.cornerRadius = self.cornerRadius
@@ -61,12 +61,12 @@ open class HFCardCollectionViewCell: UICollectionViewCell {
     }
     
     /// Overwritten to update the shadowPath.
-    override open var bounds: CGRect {
-        didSet {
-            let shadowPath = UIBezierPath(roundedRect: self.bounds, cornerRadius: self.cornerRadius).cgPath
-            self.layer.shadowPath = shadowPath
-        }
-    }
+//    override open var bounds: CGRect {
+//        didSet {
+//            let shadowPath = UIBezierPath(roundedRect: self.bounds, cornerRadius: self.cornerRadius).cgPath
+//            self.layer.shadowPath = shadowPath
+//        }
+//    }
     
     /// Overwritten to create a better snapshot.
     ///
@@ -77,7 +77,7 @@ open class HFCardCollectionViewCell: UICollectionViewCell {
         if let snapshotOfContentView = self.contentView.snapshotView(afterScreenUpdates: afterUpdates) {
             snapshotView.addSubview(snapshotOfContentView)
         }
-        self.setupLayer(snapshotView)
+//        self.setupLayer(snapshotView)
         return snapshotView
     }
     
