@@ -930,6 +930,19 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
             }
         }
     }
+	
+	private let _feedbackGenerator: Any? = {
+		if #available(iOS 10.0, *) {
+			return UIImpactFeedbackGenerator()
+		} else {
+			return nil
+		}
+	}()
+	
+	@available(iOS 10.0, *)
+	private var feedbackGenerator: UIImpactFeedbackGenerator {
+		return _feedbackGenerator as! UIImpactFeedbackGenerator
+	}
     
     // MARK: Moving Card
     
@@ -939,6 +952,10 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
         if let movingCardGestureRecognizer = self.movingCardGestureRecognizer {
             switch movingCardGestureRecognizer.state {
             case .began:
+				if #available(iOS 10.0, *) {
+					feedbackGenerator.prepare()
+				}
+				
                 self.movingCardGestureStartLocation = movingCardGestureRecognizer.location(in: self.collectionView)
                 if let indexPath = self.collectionView?.indexPathForItem(at: self.movingCardGestureStartLocation) {
                     self.movingCardActive = true
@@ -994,6 +1011,12 @@ open class HFCardCollectionViewLayout: UICollectionViewLayout, UIGestureRecogniz
                             let movingCell = self.collectionView?.cellForItem(at: currentTouchedIndexPath)
                             let movingCellAttr = self.collectionView?.layoutAttributesForItem(at: currentTouchedIndexPath)
                             
+							if #available(iOS 13.0, *) {
+								feedbackGenerator.impactOccurred(intensity: 0.6)
+							} else if #available(iOS 10.0, *) {
+								 feedbackGenerator.impactOccurred()
+							}
+							
                             if(movingCell != nil) {
                                 let cardHeadHeight = self.calculateCardHeadHeight()
                                 UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseOut, animations: {
